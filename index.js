@@ -55,29 +55,29 @@ io.on("connection",socket=>{
     
     
 
-        socket.on('chatMessage',(msg)=>{
-            const user=getCurrentUser(socket.id);
-        
-            io.to(user.room).emit('message',format(user.username,msg));
-        
-        });
-
-
-        //when client is disconnected
-        socket.on("disconnect",()=>{
-
-            const user=userLeave(socket.id);
-            if(user){
-            io.to(user.room).emit('message',format(bot,`A user ${user.username} has left`));
-            }
-
-            io.to(user.room).emit('roomusers',{
-                room:user.room,
-                users:getRoomUsers(user.room)
-            })
-        });
         
 
+});
+socket.on('chatMessage',(msg)=>{
+    const user=getCurrentUser(socket.id);
+
+    io.to(user.room).emit('message',format(user.username,msg));
+
+});
+
+
+//when client is disconnected
+socket.on("disconnect",()=>{
+
+    const user=userLeave(socket.id);
+    if(user){
+    io.to(user.room).emit('message',format(bot,`A user ${user.username} has left`));
+    }
+
+    io.to(user.room).emit('roomusers',{
+        room:user.room,
+        users:getRoomUsers(user.room)
+    })
 });
 
 
